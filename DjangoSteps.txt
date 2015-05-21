@@ -1,0 +1,112 @@
+Django App Setup Steps
+
+1) mkvirtualenv coffeedapp (desktop location -> auto switched into app env)
+
+2) (coffeedapp)SB:Desktop coder$ -- pip install django
+
+3) (coffeedapp)SB:Desktop coder$ -- pip install django-toolbelt
+
+4) (coffeedapp)SB:Desktop coder$ -- django-admin.py startproject coffeedapp
+
+5) (coffeedapp)SB:Desktop coder$ -- cd  coffeedapp/
+
+6) (coffeedapp)SB:coffeedapp coder$ -- python manage.py startapp core
+
+7) update settings.py and wsgi.py then --- foreman start
+
+
+===================================
+GIT TASKS
+
+1) create repo on Github.com
+
+2)  git init
+
+3) git remote add origin https://github.com/wisesumo/coffeedapp.git
+
+4) remote -v
+
+5) git push
+
+6) git pull origin master
+
+7) git status
+
+8) (coffeedapp)SB:coffeedapp coder$ git add Procfile
+(coffeedapp)SB:coffeedapp coder$ git add core
+(coffeedapp)SB:coffeedapp coder$ git add manage.py
+(coffeedapp)SB:coffeedapp coder$ git add coffeedapp/
+(coffeedapp)SB:coffeedapp coder$ git status
+
+9) pip freeze > requirements.txt
+
+10) git add requirements.txt 
+
+11) git status
+
+12) git commit -am "adding base files for app"
+
+13) git push origin master
+
+
+===================================
+
+TO TURN A VIRTUAL ENVIRONMENT ON USE:
+
+workon NAMEOFVIRTUALENV
+
+TO TURN A VIRTUAL ENV OFF USE:
+
+deactivate
+
+cd Dropbox/Python/coffeedapp
+
+===================================
+
+
+== OPEN TEXT EDITOR ... Sublime
+
+Add Folders:
+- static
+- templates
+
+Add Files:
+- Procfile = web: gunicorn appnamehere.wsgi --log-file -
+
+Change Settings.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MAIN_DIR = os.path.dirname(os.path.dirname(__file__))
+
+at the bottom:
+TEMPLATES_DIRS = (
+    os.path.join(MAIN_DIR, 'templates'),
+    )
+
+STATIC_DIRS = (
+    os.path.join(MAIN_DIR, 'static'),
+    )
+
+
+
+ == ADD TO SETTINGS.py for HEROKU (SOURCE: https://devcenter.heroku.com/articles/getting-started-with-django)
+
+# below the DATABASES .... section
+
+ # Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+
+
+== ADD TO WSGI.PY 
+
+from django.core.wsgi import get_wsgi_application
+from dj_static import Cling
+
+application = Cling(get_wsgi_application())
